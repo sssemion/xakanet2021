@@ -1,8 +1,24 @@
-@media(max-width:1920px) {
+@font-face{
+
+    font-family: 'test';
+    src: url('../fonts/Minecraftia-Regular.ttf') format('woff2'),
+       url('../fonts/Minecraftia-Regular.ttf')  format('truetype'), /* Только если нужна поддержка старых Android, иначе закомментировать */
+       url('../fonts/Minecraftia-Regular.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+a, label{
+    font-family: 'test';
+}
+
+@media(min-width:1920px) {
 
     body{
+        margin: 0;
         background-image: url(../img/minecraft_texture.jpg);
     }
+
+
     .container{
         word-wrap: break-word;
         box-sizing: border-box;
@@ -26,9 +42,7 @@
     }
     #navbar {
         background-image: url(../img/minecraft_texture_top.jpg);
-        repeat-x: repeat;
         height: 45pt;
-        background-color: #666;
         width: 100%;
     }
     #navbar li {

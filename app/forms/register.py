@@ -8,7 +8,6 @@ class RegisterForm(FlaskForm):
     username = StringField(label, validators=[DataRequired()], render_kw={
         "class": "form-control",
         "required": True,
-        "type": "name",
         "placeholder": label
     })
 

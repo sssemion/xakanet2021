@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% set style_files = [url_for('static', filename='css/login.css')] %}
+{% set style_files = [url_for('static', filename='css/parts/form.css')] %}
 {% block content %}
 
 <div>
-    <form class="login-form" method="post" enctype="multipart/form-data">
+    <form class="register-form form" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         {% for element in form.content %}
         <div class="input-item">
