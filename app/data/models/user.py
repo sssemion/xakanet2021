@@ -1,7 +1,7 @@
 import datetime
 
 from flask_login import UserMixin
-from sqlalchemy import Integer, Column, String, DateTime, Boolean
+from sqlalchemy import Integer, Column, String, DateTime, Boolean, orm, ForeignKey
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from app.data.db_session import db
@@ -17,6 +17,9 @@ class User(db.Model, UserMixin):
     creation_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
     password = Column(String, nullable=False)
     confirmed = Column(Boolean, nullable=False, default=False)
+
+    active_mc_server = Column(Integer, ForeignKey("mc_servers.id"))
+    mc_servers = orm.relation("MCServer", back_populates="owner")
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
