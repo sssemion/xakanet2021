@@ -1,0 +1,13 @@
+.login-form{
+    max-width: min-content;
+    border: solid black 2px;
+    padding: 2pt;
+    border-radius: 15px 15px 8px 8px;
+    background-color: #ffffff;
+}
+.input-item{
+    margin-bottom: 2pt;
+}
+.confirm-item{
+    margin-top: 5pt;
+}
