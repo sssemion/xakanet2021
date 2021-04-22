@@ -8,6 +8,7 @@ from app.exceptions import InvalidLoginOrPassword, InsecurePassword, EmailAlread
 from app.forms.create_mc_server import CreateMCServerForm
 from app.forms.login import LoginForm
 from app.forms.signup import SignUpForm
+from app.forms.support import SupportForm
 from app.services.mc_servers import create_server
 from app.services.users import log_in, sign_up, get_user_json
 
@@ -36,6 +37,12 @@ def signup_page():
             except InsecurePassword as e:
                 form.password.errors.append(str(e))
     return render_template("user/signup.html", form=form)
+
+
+@app.route("/edit")
+def details():
+    form = EditForm()
+    return render_template("user/edit.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -77,3 +84,9 @@ def create_server_page():
 def profile_page(username):
     user = get_user_json(username)
     return render_template("user/profile.html", user=user)
+
+
+@app.route("/support")
+def support():
+    form = SupportForm()
+    return render_template("support.html")

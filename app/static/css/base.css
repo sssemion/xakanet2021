@@ -12,7 +12,14 @@ body{
     background-image: url(../img/minecraft_texture.jpg);
     font-family: 'test';
 }
-
+.error{
+    border: solid 1px pink;
+    border-radius: 5px 5px;
+    background-image: url(../img/bg-redstone.jpg);
+    background-repeat: repeat;
+    color: white;
+    vertical-align: center;
+}
 .container{
     word-wrap: break-word;
     box-sizing: border-box;
@@ -25,7 +32,7 @@ body{
 .content{
     max-width: -webkit-fill-available;
     border: solid black 2px;
-    padding: 2pt;
+    padding: 5pt;
     border-radius: 15px 15px 8px 8px;
     background-color: #ffffff;
     float: right;

@@ -1,38 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <form action="" method="post">
+{% extends 'base.html' %}
+
+{% set style_files = [url_for('static', filename='css/parts/form.css'), url_for('static', filename='css/server/create.css')] %}
+
+{% block content %}
+<div class="container">
+    <form class="server-form form content" action="" method="post">
         {{ form.hidden_tag() }}
 
-        {{ form.name.label() }}
-        {{ form.name() }}
-        {{ form.name.errors }}
+        {% for element in form.content%}
+        <div class="input-item">
+        {{ element.label() }}
+        {{ element() }}
+            {% for error in element.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
         <br>
-        {{ form.host.label() }}
-        {{ form.host() }}
-        {{ form.host.errors }}
-        <br>
-        {{ form.rcon_port.label() }}
-        {{ form.rcon_port() }}
-        {{ form.rcon_port.errors }}
-        <br>
-        {{ form.rcon_password.label() }}
-        {{ form.rcon_password() }}
-        {{ form.rcon_password.errors }}
-        <br>
-        {{ form.nickname.label() }}
-        {{ form.nickname() }}
-        {{ form.nickname.errors }}
-        <br>
-        {{ form.make_active.label() }}
-        {{ form.make_active() }}
-        {{ form.make_active.errors }}
-        <br>
+        {% endfor %}
         {{ form.submit() }}
     </form>
-</body>
-</html>
+</div>
+{% endblock %}

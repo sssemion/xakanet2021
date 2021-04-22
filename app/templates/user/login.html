@@ -9,6 +9,9 @@
         <div class="input-item">
             {{ element.label }}
             {{ element() }}
+            {% for error in element.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
         </div>
         {% endfor %}
 
