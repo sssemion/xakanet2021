@@ -130,9 +130,3 @@ def edit_page():
         edit(form.twitch.data, form.youtube.data, form.photo.data)
         return redirect(f"/profile/{current_user.username}")
     return render_template("user/edit.html", form=form)
-
-
-@app.route("/abacaba")
-def abacaba():
-    get_all_items_json()
-    return ""
