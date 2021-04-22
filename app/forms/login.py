@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired
 
 
@@ -10,18 +10,21 @@ class LoginForm(FlaskForm):
         "required": True,
         "placeholder": label
     })
-
+    
     label = "password"
     password = StringField(label, validators=[DataRequired()], render_kw={
         "required": True,
         "type": "password",
         "placeholder": label
     })
+    
+    remember_me = BooleanField("Remember me")
+
     submit = SubmitField("OK", render_kw={
         "class": "btn btn-primary",
         "type": "submit"
     })
-
+    
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
         default = "form-control"
