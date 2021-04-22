@@ -13,18 +13,36 @@
 <div class="content">
     <div class="left-item" style="width: 40%">
         <img class="avatar" src="{{ photo_url }}">
+        <a style="display: block;" href="/edit">change details</a>
     </div>
     <div class="right-item">
         <p>username: {{ user['username'] }}</p>
-        <p>email: {{ user['email'] }}</p>
+        {% if user['email'] %}
+            <p>email: {{ user['email'] }}</p>
+        {% endif %}
+        {% if user['youtube'] or user['twitch'] %}
         links:
-        {% for link in user['links'] %}
-        <a href="{{ link['link'] }}">{{ link['place'] }}</a>
-        {% endfor %}
-        <p>servers:</p>
-        {% for server in user['servers'] %}
-        <p><input type="radio" name="server", value="{{ server['id'] }}"><a href="/server/{{ server['id'] }}">{{ server['name'] }}</a></input></p>
-        {% endfor %}
+        {% endif %}
+        {% if user['youtube'] %}
+            <a href="{{ user['youtube'] }}">youtube</a>
+        {% else %}
+        {% endif %}
+        {% if user['twitch'] %}
+            <a href="{{ user['twitch'] }}">twitch</a>
+        {% endif %}
+        {% set active_server_id = user['active_mc_server'] %}
+        {% if user['mc_servers'] %}
+                <p>servers:</p>
+            {% for server in user['mc_servers'] %}
+                <div class="left-item">
+                    {% set server_id = server['id'] %}
+                    <p><input type="radio" name="server", value="{{ server['id'] }}"><a href="/server/{{ server['id'] }}" {% if server_id == active_server_id %} checked {% endif %}>{{ server['name'] }}</a></input></p>
+                </div>
+                <div class="right-item delete-item">
+                    <button class="error" value="{{ server['id'] }}">delete</button>
+                </div>
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 {% endblock %}

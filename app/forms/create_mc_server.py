@@ -12,3 +12,8 @@ class CreateMCServerForm(FlaskForm):
     make_active = BooleanField("Сделать активным")
 
     submit = SubmitField("Отправить")
+
+    def __init__(self, *args, **kwargs):
+        super(CreateMCServerForm, self).__init__(*args, **kwargs)
+        default = "form-control"
+        self.content = [self.name, self.host, self.rcon_port, self.rcon_password, self.nickname, self.make_active]

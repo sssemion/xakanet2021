@@ -30,4 +30,4 @@ class LoginForm(FlaskForm):
         default = "form-control"
         self.login.render_kw["class"] = default
         self.password.render_kw["class"] = default
-        self.content = [self.login, self.password]
+        self.content = [self.login, self.password, self.remember_me]

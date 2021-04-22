@@ -8,8 +8,10 @@ from app.exceptions import InvalidLoginOrPassword, InsecurePassword, EmailAlread
     ServerAlreadyAdded, ServerConnectionError, ResourceNotFound, InvalidConfirmationCode
 from app.forms.confirm_email import ConfirmEmailForm
 from app.forms.create_mc_server import CreateMCServerForm
+from app.forms.edit import EditForm
 from app.forms.login import LoginForm
 from app.forms.signup import SignUpForm
+from app.forms.support import SupportForm
 from app.services.mc_servers import create_server
 from app.services.users import log_in, sign_up, get_user_json, confirm_email
 
@@ -54,6 +56,12 @@ def signup_page():
     return render_template("user/signup.html", form=form)
 
 
+@app.route("/edit")
+def details():
+    form = EditForm()
+    return render_template("user/edit.html", form=form)
+
+  
 @app.route("/confirm", methods=["GET", "POST"])
 def confirm_page():
     if not current_user.is_authenticated or current_user.confirmed:
@@ -111,3 +119,9 @@ def profile_page(username):
         return render_template("user/profile.html", user=user)
     except ResourceNotFound:
         abort(404)
+ 
+
+@app.route("/support")
+def support():
+    form = SupportForm()
+    return render_template("support.html")

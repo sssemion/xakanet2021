@@ -35,3 +35,6 @@ mail = Mail(app)
 login_manager = LoginManager(app)
 
 from app import controllers
+from app.ajax_controllers import ajax
+
+app.register_blueprint(ajax, url_prefix='/ajax')
