@@ -16,6 +16,11 @@ def delete_server_controller(server_id):
         return jsonify({"success": True})
     except ResourceNotFound as e:
         return jsonify({"success": False, "message": str(e)})
+      
+      
+@ajax.route("/server/activate/<int:server_id>", methods=["POST"])
+def activate_server(server_id):
+    return jsonify({"success": True})
 
 
 @ajax.route("/user/<username>/give/<int:item_id>", methods=["POST"])

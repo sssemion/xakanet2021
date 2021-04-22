@@ -1,3 +1,6 @@
 .server-form{
     max-width: min-content;
 }
+.input-item{
+    margin-bottom: 5pt;
+}

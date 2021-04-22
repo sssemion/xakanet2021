@@ -1,5 +1,11 @@
 .form-control{
-    width: 50%;
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+}
+.input-item{
+    text-align: center;
+    margin-right: 2pt;
 }
 .form{
     max-width: -webkit-fill-available;

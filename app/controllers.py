@@ -55,7 +55,7 @@ def signup_page():
                 form.password.errors.append(str(e))
     return render_template("user/signup.html", form=form)
 
-  
+
 @app.route("/confirm", methods=["GET", "POST"])
 def confirm_page():
     if not current_user.is_authenticated or current_user.confirmed:
@@ -113,12 +113,17 @@ def profile_page(username):
         return render_template("user/profile.html", user=user)
     except ResourceNotFound:
         abort(404)
- 
 
-@app.route("/support")
-def support_page():
-    form = SupportForm()
-    return render_template("support.html")
+        
+@app.route("/profile")
+def reroute():
+    return redirect(f"/profile/{current_user.username}")
+
+
+@app.route("/profile/<string:username>/support")
+def support(username):
+    user = get_user_json(username)
+    return render_template("support.html", user=user)
 
 
 @app.route("/edit", methods=["GET", "POST"])

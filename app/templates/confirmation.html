@@ -9,7 +9,9 @@
         <div class="input-item">
             {{ form.code.label }}
             {{ form.code() }}
-            {{ form.code.errors }}
+            {% for error in form.code.errors %}
+                {{ form.code.errors }}
+            {% endfor %}
         </div>
 
         <div class="confirm-item" id="submit">
