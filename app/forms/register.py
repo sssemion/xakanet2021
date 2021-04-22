@@ -1,5 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from flask_wtf.file import FileAllowed
+from wtforms import StringField, SubmitField, FileField
 from wtforms.validators import DataRequired
 
 
@@ -32,6 +33,12 @@ class RegisterForm(FlaskForm):
         "placeholder": label
     })
 
+    photo = FileField("Attach an image", render_kw={
+        "class": "form-control-file btn btn-primary",
+        "id": "photoField",
+        "accept": ".jpg,.jpeg,.png"
+    }, validators=[FileAllowed(["jpeg", "jpg", "png"], "Images only!")])
+
     submit = SubmitField("OK", render_kw={
         "class": "btn btn-primary",
         "type": "submit"
@@ -40,8 +47,10 @@ class RegisterForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
         default = "form-control"
+        photo = "photo-item"
         self.email.render_kw["class"] = default
         self.username.render_kw["class"] = default
         self.password.render_kw["class"] = default
         self.password_again.render_kw["class"] = default
+        self.photo.render_kw["class"] = photo
         self.content = [self.email, self.username, self.password, self.password_again]

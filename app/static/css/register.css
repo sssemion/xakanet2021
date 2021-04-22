@@ -1,0 +1,18 @@
+.left-item, .right-item{
+    float: left;
+    width: 50%;
+}
+.right-item{
+    text-align: right;
+}
+.form-control{
+    width: 50%;
+}
+.form{
+    max-width: -webkit-fill-available;
+    float: left;
+}
+#preload{
+    max-width: -webkit-fill-available;
+    border-radius: 10px 10px;
+}
