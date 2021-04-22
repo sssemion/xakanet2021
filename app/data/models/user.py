@@ -19,9 +19,12 @@ class User(db.Model, UserMixin, SerializerMixin):
     creation_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
     password = Column(String, nullable=False)
     confirmed = Column(Boolean, nullable=False, default=False)
+    confirmation_code = Column(Integer, nullable=True)
 
     youtube = Column(String, nullable=True)
     twitch = Column(String, nullable=True)
+
+    photo = Column(String, nullable=True)
 
     active_mc_server = Column(Integer, ForeignKey("mc_servers.id"))
     mc_servers = orm.relation("MCServer", back_populates="owner", primaryjoin=id == MCServer.owner_id, lazy="dynamic")
@@ -33,18 +36,22 @@ class User(db.Model, UserMixin, SerializerMixin):
         return check_password_hash(self.password, password)
 
     def __eq__(self, other):
-        return self.id == other.id
+        try:
+            return self.id == other.id
+        except AttributeError:
+            return False
 
     def to_dict(self, additional=None, *args, **kwargs):
         if additional is None:
             additional = []
         if "only" in kwargs:
             return super(User, self).to_dict(*args, **kwargs)
-        res = super(User, self).to_dict(only=["id", "username", "creation_date", "youtube", "twitch"])
+        res = super(User, self).to_dict(only=["id", "username", "creation_date", "youtube", "twitch", "photo"])
         if "mc_servers" in additional:
             res["mc_servers"] = [server.to_dict(only=["id", "name", "host", "rcon_port", "rcon_password", "nickname"])
                                  for server in self.mc_servers]
             additional.remove("mc_servers")
-        for k, v in super(User, self).to_dict(only=additional).items():
-            res[k] = v
+        if additional:
+            for k, v in super(User, self).to_dict(only=additional).items():
+                res[k] = v
         return res
