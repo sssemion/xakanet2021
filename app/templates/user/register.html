@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% set style_files = [url_for('static', filename='css/parts/form.css'), url_for('static', filename='css/register.css')] %}
+{% set script_files = [url_for('static', filename='js/thumbnail.js')] %}
+{% block content %}
+
+<div>
+    <form class="register-form form content" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="left-item">
+            {% for element in form.content %}
+            <div class="input-item">
+                {{ element.label }}
+                {{ element() }}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="right-item">
+            <img id="preload" src="/static/img/steve.png" class="img-thumbnail">
+            {{ form.photo.label }}
+            {{ form.photo() }}
+        </div>
+        <div class="confirm-item" id="submit">
+            {{ form.submit() }}
+            <input type="button" onclick="history.back();" class="btn btn-primary" value="Cancel"/>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

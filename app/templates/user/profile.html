@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% set style_files = [url_for('static', filename='css/profile.css')] %}
+
+{% if user['photo'] %}
+    {% set photo_url = user['photo'] %}
+{% else %}
+    {% set photo_url = url_for('static', filename='img/steve.png') %}
+{% endif %}
+
+{% block content %}
+
+<div class="content">
+    <div class="left-item" style="width: 40%">
+        <img class="avatar" src="{{ photo_url }}">
+    </div>
+    <div class="right-item">
+        <p>username: {{ user['username'] }}</p>
+        <p>email: {{ user['email'] }}</p>
+        links:
+        {% for link in user['links'] %}
+        <a href="{{ link['link'] }}">{{ link['place'] }}</a>
+        {% endfor %}
+        <p>servers:</p>
+        {% for server in user['servers'] %}
+        <p><input type="radio" name="server", value="{{ server['id'] }}"><a href="/server/{{ server['id'] }}">{{ server['name'] }}</a></input></p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

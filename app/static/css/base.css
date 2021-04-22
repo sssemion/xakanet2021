@@ -1,0 +1,75 @@
+@font-face{
+
+    font-family: 'test';
+    src: url('../fonts/Minecraftia-Regular.ttf') format('woff2'),
+       url('../fonts/Minecraftia-Regular.ttf')  format('truetype'), /* Только если нужна поддержка старых Android, иначе закомментировать */
+       url('../fonts/Minecraftia-Regular.ttf') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+body{
+    margin: 0;
+    background-image: url(../img/minecraft_texture.jpg);
+    font-family: 'test';
+}
+
+.container{
+    word-wrap: break-word;
+    box-sizing: border-box;
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 5pt;
+    text-align: center;
+}
+
+.content{
+    max-width: -webkit-fill-available;
+    border: solid black 2px;
+    padding: 2pt;
+    border-radius: 15px 15px 8px 8px;
+    background-color: #ffffff;
+    float: right;
+}
+
+.left-item, .right-item{
+    float: left;
+    width: 50%;
+}
+.right-item{
+    text-align: right;
+}
+
+#navbar ul{
+    display: none;
+    background-color: #f90;
+    position: absolute;
+    top: 100%;
+}
+#navbar li:hover ul { display: block; }
+#navbar, #navbar ul{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+#navbar {
+    background-image: url(../img/minecraft_texture_top.jpg);
+    height: 45pt;
+    width: 100%;
+}
+#navbar li {
+    float: left;
+    position: relative;
+    height: 100%;
+}
+#navbar li a {
+    font-size: 17pt;
+    display: block;
+    padding: 6px;
+    width: max-content;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+}
+#navbar ul li { float: none; }
+#navbar li:hover { background-color: #f90; }
+#navbar ul li:hover { background-color: #666; }

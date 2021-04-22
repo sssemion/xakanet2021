@@ -12,6 +12,11 @@ from app.services.mc_servers import create_server
 from app.services.users import log_in, sign_up
 
 
+@app.route("/")
+def main():
+    return render_template("main.html")
+
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup_page():
     if current_user.is_authenticated:
@@ -67,3 +72,11 @@ def create_server_page():
         except (ServerAlreadyAdded, ServerConnectionError) as e:
             form.host.errors.append(str(e))
     return render_template("create_mc_server.html", form=form)
+ 
+
+@app.route("/profile/<string:username>", methods=["GET"])
+def profile(username):
+    return render_template('user/profile.html', user={"username": "me", "email": "my.open@mail.ru",
+                                                      "links": [{"place": "youtube", "link": "https://youtube.com"},
+                                                                {"place": "twitch", "link": "https://twitch.tv"}],
+                                                      "servers": [{"name": "Germany", "id": 1}]})
