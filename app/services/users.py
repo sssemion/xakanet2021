@@ -1,9 +1,11 @@
 import flask_login
+from flask_login import current_user
 
 from app import login_manager
 from app.data.db_session import create_session, create_non_closing_session
 from app.data.models.user import User
-from app.exceptions import EmailAlreadyExists, UsernameAlreadyExists, InvalidLoginOrPassword, InsecurePassword
+from app.exceptions import EmailAlreadyExists, UsernameAlreadyExists, InvalidLoginOrPassword, InsecurePassword, \
+    ResourceNotFound
 
 
 @login_manager.user_loader
@@ -42,3 +44,13 @@ def is_password_secure(password: str) -> bool:
                 password.isalpha() or
                 password.islower() or
                 password.isupper()) and password.isalnum()
+
+
+def get_user_json(username):
+    with create_session() as session:
+        user = session.query(User).filter(User.username == username).first()
+        if user is None:
+            raise ResourceNotFound
+        if user == current_user:
+            return user.to_dict(additional=["email", "active_mc_server", "mc_servers", "confirmed"])
+        return user.to_dict()

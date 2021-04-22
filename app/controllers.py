@@ -9,11 +9,11 @@ from app.forms.create_mc_server import CreateMCServerForm
 from app.forms.login import LoginForm
 from app.forms.signup import SignUpForm
 from app.services.mc_servers import create_server
-from app.services.users import log_in, sign_up
+from app.services.users import log_in, sign_up, get_user_json
 
 
 @app.route("/")
-def main():
+def main_page():
     return render_template("main.html")
 
 
@@ -73,9 +73,7 @@ def create_server_page():
     return render_template("create_mc_server.html", form=form)
  
 
-@app.route("/profile/<string:username>", methods=["GET"])
-def profile(username):
-    return render_template("user/profile.html", user={"username": "me", "email": "my.open@mail.ru",
-                                                      "links": [{"place": "youtube", "link": "https://youtube.com"},
-                                                                {"place": "twitch", "link": "https://twitch.tv"}],
-                                                      "servers": [{"name": "Germany", "id": 1}]})
+@app.route("/profile/<string:username>")
+def profile_page(username):
+    user = get_user_json(username)
+    return render_template("user/profile.html", user=user)
