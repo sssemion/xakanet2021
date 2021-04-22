@@ -20,3 +20,13 @@ class InvalidLoginOrPassword(CustomException):
 class InsecurePassword(CustomException):
     def __init__(self):
         super(InsecurePassword, self).__init__("Ненадежный пароль")
+
+
+class ServerAlreadyAdded(CustomException):
+    def __init__(self):
+        super(ServerAlreadyAdded, self).__init__("Сервер уже добавлен")
+
+
+class ServerConnectionError(CustomException):
+    def __init__(self):
+        super(ServerConnectionError, self).__init__("Ошибка подключения к серверу")

@@ -1,14 +1,14 @@
 import flask_login
 
 from app import login_manager
-from app.data.db_session import create_session
+from app.data.db_session import create_session, create_non_closing_session
 from app.data.models.user import User
 from app.exceptions import EmailAlreadyExists, UsernameAlreadyExists, InvalidLoginOrPassword, InsecurePassword
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    with create_session() as session:
+    with create_non_closing_session() as session:
         return session.query(User).get(int(user_id))
 
 

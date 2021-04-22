@@ -3,9 +3,12 @@ from flask_login import current_user, logout_user
 from werkzeug.utils import redirect
 
 from app import app
-from app.exceptions import InvalidLoginOrPassword, InsecurePassword, EmailAlreadyExists, UsernameAlreadyExists
+from app.exceptions import InvalidLoginOrPassword, InsecurePassword, EmailAlreadyExists, UsernameAlreadyExists, \
+    ServerAlreadyAdded, ServerConnectionError
+from app.forms.create_mc_server import CreateMCServerForm
 from app.forms.login import LoginForm
 from app.forms.signup import SignUpForm
+from app.services.mc_servers import create_server
 from app.services.users import log_in, sign_up
 
 
@@ -49,3 +52,18 @@ def login_page():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route("/server/new", methods=["GET", "POST"])
+def create_server_page():
+    if not current_user.is_authenticated:
+        return redirect("/login")
+    form = CreateMCServerForm()
+    if form.validate_on_submit():
+        try:
+            create_server(form.name.data, form.host.data, form.rcon_port.data,
+                          form.rcon_password.data, form.nickname.data, form.make_active.data)
+            return redirect("/profile")
+        except (ServerAlreadyAdded, ServerConnectionError) as e:
+            form.host.errors.append(str(e))
+    return render_template("create_mc_server.html", form=form)
