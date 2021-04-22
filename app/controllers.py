@@ -18,7 +18,6 @@ from app.services.users import log_in, sign_up, get_user_json, confirm_email, ed
 
 def only_for_authenticated_and_confirmed(func):
     def new_func(*args, **kwargs):
-        print(1)
         if not current_user.is_authenticated:
             return redirect("/login")
         if not current_user.confirmed:
