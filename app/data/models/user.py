@@ -19,6 +19,7 @@ class User(db.Model, UserMixin, SerializerMixin):
     creation_date = Column(DateTime, nullable=False, default=datetime.datetime.now)
     password = Column(String, nullable=False)
     confirmed = Column(Boolean, nullable=False, default=False)
+    confirmation_code = Column(Integer, nullable=True)
 
     youtube = Column(String, nullable=True)
     twitch = Column(String, nullable=True)
@@ -35,7 +36,10 @@ class User(db.Model, UserMixin, SerializerMixin):
         return check_password_hash(self.password, password)
 
     def __eq__(self, other):
-        return self.id == other.id
+        try:
+            return self.id == other.id
+        except AttributeError:
+            return False
 
     def to_dict(self, additional=None, *args, **kwargs):
         if additional is None:

@@ -1,19 +1,35 @@
 from flask import render_template
 from flask_login import current_user, logout_user
+from werkzeug.exceptions import abort
 from werkzeug.utils import redirect
 
 from app import app
 from app.exceptions import InvalidLoginOrPassword, InsecurePassword, EmailAlreadyExists, UsernameAlreadyExists, \
-    ServerAlreadyAdded, ServerConnectionError
+    ServerAlreadyAdded, ServerConnectionError, ResourceNotFound, InvalidConfirmationCode
+from app.forms.confirm_email import ConfirmEmailForm
 from app.forms.create_mc_server import CreateMCServerForm
 from app.forms.login import LoginForm
 from app.forms.signup import SignUpForm
 from app.services.mc_servers import create_server
-from app.services.users import log_in, sign_up, get_user_json
+from app.services.users import log_in, sign_up, get_user_json, confirm_email
+
+
+def only_for_authenticated_and_confirmed(func):
+    def new_func(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return redirect("/login")
+        if not current_user.confirmed:
+            return redirect("/confirm")
+        return func(*args, **kwargs)
+
+    new_func.__name__ = func.__name__
+    return new_func
 
 
 @app.route("/")
 def main_page():
+    if current_user.is_authenticated and not current_user.confirmed:
+        return redirect("/confirm")
     return render_template("main.html")
 
 
@@ -38,6 +54,20 @@ def signup_page():
     return render_template("user/signup.html", form=form)
 
 
+@app.route("/confirm", methods=["GET", "POST"])
+def confirm_page():
+    if not current_user.is_authenticated or current_user.confirmed:
+        abort(404)
+    form = ConfirmEmailForm()
+    if form.validate_on_submit():
+        try:
+            confirm_email(form.code.data)
+            return redirect("/")
+        except InvalidConfirmationCode as e:
+            form.code.errors.append(str(e))
+    return render_template("confirmation.html", form=form)
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login_page():
     if current_user.is_authenticated:
@@ -58,10 +88,9 @@ def logout():
     return redirect("/")
 
 
+@only_for_authenticated_and_confirmed
 @app.route("/server/new", methods=["GET", "POST"])
 def create_server_page():
-    if not current_user.is_authenticated:
-        return redirect("/login")
     form = CreateMCServerForm()
     if form.validate_on_submit():
         try:
@@ -71,9 +100,14 @@ def create_server_page():
         except (ServerAlreadyAdded, ServerConnectionError) as e:
             form.host.errors.append(str(e))
     return render_template("create_mc_server.html", form=form)
- 
+
 
 @app.route("/profile/<string:username>")
 def profile_page(username):
-    user = get_user_json(username)
-    return render_template("user/profile.html", user=user)
+    if current_user.is_authenticated and not current_user.confirmed:
+        return redirect("/confirm")
+    try:
+        user = get_user_json(username)
+        return render_template("user/profile.html", user=user)
+    except ResourceNotFound:
+        abort(404)

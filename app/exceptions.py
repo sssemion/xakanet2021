@@ -35,3 +35,8 @@ class ServerConnectionError(CustomException):
 class ResourceNotFound(CustomException):
     def __init__(self):
         super(ResourceNotFound, self).__init__("Запрашиваемый ресурс не найден")
+
+
+class InvalidConfirmationCode(CustomException):
+    def __init__(self):
+        super(InvalidConfirmationCode, self).__init__("Неверный код подтверждения")
