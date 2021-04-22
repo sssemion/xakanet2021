@@ -3,7 +3,7 @@
 {% set style_files = [url_for('static', filename='css/profile.css')] %}
 
 {% if user['photo'] %}
-    {% set photo_url = user['photo'] %}
+    {% set photo_url = url_for("static", filename="img/profile-photos/" + user['photo']) %}
 {% else %}
     {% set photo_url = url_for('static', filename='img/steve.png') %}
 {% endif %}
@@ -24,11 +24,11 @@
         links:
         {% endif %}
         {% if user['youtube'] %}
-            <a href="{{ user['youtube'] }}">youtube</a>
+            <a href="{{ user['youtube'] }}" target="_blank">youtube</a>
         {% else %}
         {% endif %}
         {% if user['twitch'] %}
-            <a href="{{ user['twitch'] }}">twitch</a>
+            <a href="{{ user['twitch'] }}" target="_blank">twitch</a>
         {% endif %}
         {% if user['money'] %}
             <p>Баланс: {{ user['money'] }} Р</p>

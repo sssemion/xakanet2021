@@ -13,7 +13,7 @@ from app.forms.login import LoginForm
 from app.forms.signup import SignUpForm
 from app.forms.support import SupportForm
 from app.services.mc_servers import create_server
-from app.services.users import log_in, sign_up, get_user_json, confirm_email
+from app.services.users import log_in, sign_up, get_user_json, confirm_email, edit
 
 
 def only_for_authenticated_and_confirmed(func):
@@ -54,12 +54,6 @@ def signup_page():
             except InsecurePassword as e:
                 form.password.errors.append(str(e))
     return render_template("user/signup.html", form=form)
-
-
-@app.route("/edit")
-def details():
-    form = EditForm()
-    return render_template("user/edit.html", form=form)
 
   
 @app.route("/confirm", methods=["GET", "POST"])
@@ -122,6 +116,16 @@ def profile_page(username):
  
 
 @app.route("/support")
-def support():
+def support_page():
     form = SupportForm()
     return render_template("support.html")
+
+
+@only_for_authenticated_and_confirmed
+@app.route("/edit", methods=["GET", "POST"])
+def edit_page():
+    form = EditForm()
+    if form.validate_on_submit():
+        edit(form.twitch.data, form.youtube.data, form.photo.data)
+        return redirect(f"/profile/{current_user.username}")
+    return render_template("user/edit.html", form=form)

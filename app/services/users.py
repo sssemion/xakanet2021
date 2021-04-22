@@ -44,8 +44,9 @@ def sign_up(email, username, password, photo=None):
         session.commit()
 
         if photo:
-            photo_filename = generate_photo_filename(user.id)
-            photo.save(f"app/static/img/profile-photos/{photo_filename}.{photo.filename.split('.')[-1]}")
+            photo_filename = f"{generate_photo_filename(user.id)}.{photo.filename.split('.')[-1]}"
+            photo.save(f"app/static/img/profile-photos/{photo_filename}")
+            user.photo = photo_filename
         flask_login.login_user(user)
 
 
@@ -65,6 +66,19 @@ def log_in(login, password, remember_me=False):
             raise InvalidLoginOrPassword
         flask_login.login_user(user, remember=remember_me)
         return True
+
+
+def edit(twitch, youtube, photo):
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        user.twitch = twitch
+        user.youtube = youtube
+        if photo:
+            if user.photo:
+                os.remove(f"app/static/img/profile-photos/{user.photo}")
+            photo_filename = f"{generate_photo_filename(user.id)}.{photo.filename.split('.')[-1]}"
+            photo.save(f"app/static/img/profile-photos/{photo_filename}")
+            user.photo = photo_filename
 
 
 def is_password_secure(password: str) -> bool:
