@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% set style_files = [url_for('static', filename='css/parts/form.css')] %}
+
+{% block content %}
+<div>
+    <form class="login-form form content" method="post" enctype="multipart/form-data">
+        <p>Пожалуйста, проверьте ваш email.</p>
+        {{ form.hidden_tag() }}
+        <div class="input-item">
+            {{ form.code.label }}
+            {{ form.code() }}
+            {{ form.code.errors }}
+        </div>
+
+        <div class="confirm-item" id="submit">
+            {{ form.submit() }}
+            <a href="/logout">Отмена</a>
+        </div>
+
+
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% set style_files = [url_for('static', filename='css/parts/form.css'), url_for('static', filename='css/server/create.css')] %}
+
+{% block content %}
+<div class="container">
+    <form class="server-form form content" action="" method="post">
+        {{ form.hidden_tag() }}
+
+        {% for element in form.content%}
+        <div class="input-item">
+        {{ element.label() }}
+        {{ element() }}
+            {% for error in element.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        <br>
+        {% endfor %}
+        {{ form.submit() }}
+    </form>
+</div>
+{% endblock %}

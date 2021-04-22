@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% set style_files = [url_for('static', filename='css/parts/form.css')] %}
+
+{% block content %}
+<div>
+    <form class="login-form form content" method="post" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {% for element in form.content %}
+        <div class="input-item">
+            {{ element.label }}
+            {{ element() }}
+            {% for error in element.errors %}
+                <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endfor %}
+
+        <div class="confirm-item" id="submit">
+            {{ form.submit() }}
+            <input type="button" onclick="history.back();" class="btn btn-primary" value="Cancel"/>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}
