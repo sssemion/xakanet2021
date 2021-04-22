@@ -45,6 +45,7 @@ class User(db.Model, UserMixin, SerializerMixin):
             res["mc_servers"] = [server.to_dict(only=["id", "name", "host", "rcon_port", "rcon_password", "nickname"])
                                  for server in self.mc_servers]
             additional.remove("mc_servers")
-        for k, v in super(User, self).to_dict(only=additional).items():
-            res[k] = v
+        if additional:
+            for k, v in super(User, self).to_dict(only=additional).items():
+                res[k] = v
         return res
