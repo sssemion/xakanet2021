@@ -17,6 +17,12 @@ class MCServer(db.Model, SerializerMixin):
     owner_id = Column(Integer, ForeignKey("users.id"))
     owner = orm.relation("User", foreign_keys=[owner_id], back_populates="mc_servers")
 
+    def __eq__(self, other):
+        try:
+            return self.id == other.id
+        except AttributeError:
+            return False
+
     def to_dict(self, additional=None, *args, **kwargs):
         if additional is None:
             additional = []

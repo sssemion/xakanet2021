@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
 from wtforms import FileField, StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms.validators import URL
 
 
 class EditForm(FlaskForm):
@@ -11,15 +11,13 @@ class EditForm(FlaskForm):
         "accept": ".jpg,.jpeg,.png"
     }, validators=[FileAllowed(["jpeg", "jpg", "png"], "Images only!")])
 
-    label = 'link to twitch'
-    twitch = StringField(label, validators=[DataRequired()], render_kw={
-        "required": True,
+    label = "Ссылка Twitch"
+    twitch = StringField(label, validators=[URL()], render_kw={
         "placeholder": label
     })
 
-    label = 'link to youtube'
-    youtube = StringField(label, validators=[DataRequired()], render_kw={
-        "required": True,
+    label = "Ссылка на YouTube"
+    youtube = StringField(label, validators=[URL()], render_kw={
         "placeholder": label
     })
 
