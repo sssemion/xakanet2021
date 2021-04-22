@@ -20,3 +20,11 @@ def register():
 def login():
     form = LoginForm()
     return render_template('user/login.html', form=form)
+
+
+@app.route("/profile/<string:username>", methods=["GET"])
+def profile(username):
+    return render_template('user/profile.html', user={"username": "me", "email": "my.open@mail.ru",
+                                                      "links": [{"place": "youtube", "link": "https://youtube.com"},
+                                                                {"place": "twitch", "link": "https://twitch.tv"}],
+                                                      "servers": [{"name": "Germany", "id": 1}]})

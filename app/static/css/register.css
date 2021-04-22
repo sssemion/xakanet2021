@@ -1,10 +1,4 @@
-.left-item, .right-item{
-    float: left;
-    width: 50%;
-}
-.right-item{
-    text-align: right;
-}
+
 .form-control{
     width: 50%;
 }

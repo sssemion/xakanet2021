@@ -4,7 +4,7 @@
 {% block content %}
 
 <div>
-    <form class="register-form form" method="post" enctype="multipart/form-data">
+    <form class="register-form form content" method="post" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <div class="left-item">
             {% for element in form.content %}
@@ -15,7 +15,7 @@
             {% endfor %}
         </div>
         <div class="right-item">
-            <img id="preload" src="/static/img/icons/other/user.svg" class="img-thumbnail">
+            <img id="preload" src="/static/img/steve.png" class="img-thumbnail">
             {{ form.photo.label }}
             {{ form.photo() }}
         </div>
