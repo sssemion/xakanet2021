@@ -12,6 +12,7 @@ from app.forms.edit import EditForm
 from app.forms.login import LoginForm
 from app.forms.signup import SignUpForm
 from app.forms.support import SupportForm
+from app.services.items import get_all_items_json
 from app.services.mc_servers import create_server
 from app.services.users import log_in, sign_up, get_user_json, confirm_email, edit
 
@@ -129,3 +130,9 @@ def edit_page():
         edit(form.twitch.data, form.youtube.data, form.photo.data)
         return redirect(f"/profile/{current_user.username}")
     return render_template("user/edit.html", form=form)
+
+
+@app.route("/abacaba")
+def abacaba():
+    get_all_items_json()
+    return ""

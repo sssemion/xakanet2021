@@ -1,5 +1,4 @@
 {
-    "arrow": 1,
     "food": {
         "apple": 5,
         "baked potato": 10,
@@ -34,6 +33,7 @@
         "netherite leggins": 3000
     },
     "weapon":{
+        "arrow": 1,
         "diamond axe": 1000,
         "diamond hoe": 700,
         "diamond pickaxe": 1500,
