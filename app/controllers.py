@@ -27,7 +27,7 @@ def signup_page():
             form.password_again.errors.append("Пароли не совпадают")
         else:
             try:
-                sign_up(form.email.data, form.username.data, form.password.data)
+                sign_up(form.email.data, form.username.data, form.password.data, form.photo.data)
                 return redirect("/")
             except EmailAlreadyExists as e:
                 form.email.errors.append(str(e))

@@ -23,6 +23,8 @@ class User(db.Model, UserMixin, SerializerMixin):
     youtube = Column(String, nullable=True)
     twitch = Column(String, nullable=True)
 
+    photo = Column(String, nullable=True)
+
     active_mc_server = Column(Integer, ForeignKey("mc_servers.id"))
     mc_servers = orm.relation("MCServer", back_populates="owner", primaryjoin=id == MCServer.owner_id, lazy="dynamic")
 
@@ -40,7 +42,7 @@ class User(db.Model, UserMixin, SerializerMixin):
             additional = []
         if "only" in kwargs:
             return super(User, self).to_dict(*args, **kwargs)
-        res = super(User, self).to_dict(only=["id", "username", "creation_date", "youtube", "twitch"])
+        res = super(User, self).to_dict(only=["id", "username", "creation_date", "youtube", "twitch", "photo"])
         if "mc_servers" in additional:
             res["mc_servers"] = [server.to_dict(only=["id", "name", "host", "rcon_port", "rcon_password", "nickname"])
                                  for server in self.mc_servers]
