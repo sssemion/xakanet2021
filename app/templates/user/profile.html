@@ -30,6 +30,9 @@
         {% if user['twitch'] %}
             <a href="{{ user['twitch'] }}">twitch</a>
         {% endif %}
+        {% if user['money'] %}
+            <p>Баланс: {{ user['money'] }} Р</p>
+        {% endif %}
         {% set active_server_id = user['active_mc_server'] %}
         {% if user['mc_servers'] %}
                 <p>servers:</p>

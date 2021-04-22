@@ -26,6 +26,8 @@ class User(db.Model, UserMixin, SerializerMixin):
 
     photo = Column(String, nullable=True)
 
+    money = Column(Integer, nullable=False, default=100)
+
     active_mc_server = Column(Integer, ForeignKey("mc_servers.id"))
     mc_servers = orm.relation("MCServer", back_populates="owner", primaryjoin=id == MCServer.owner_id, lazy="dynamic")
 

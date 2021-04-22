@@ -81,7 +81,7 @@ def get_user_json(username):
         if user is None:
             raise ResourceNotFound
         if current_user.is_authenticated and user == current_user and current_user.confirmed:
-            return user.to_dict(additional=["email", "active_mc_server", "mc_servers", "confirmed"])
+            return user.to_dict(additional=["email", "active_mc_server", "mc_servers", "confirmed", "money"])
         return user.to_dict()
 
 
