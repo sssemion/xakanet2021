@@ -25,7 +25,7 @@ def best_time(adress="46.174.54.100", port=26576, password="LojSwh77x25e4c3SXMSU
         mcr.command("weather clear")
 
 
-def huef(adress="46.174.54.100", port=26576, password="LojSwh77x25e4c3SXMSUWvz23bWn5tM6y"):
+def check(adress="46.174.54.100", port=26576, password="LojSwh77x25e4c3SXMSUWvz23bWn5tM6y"):
     try:
         with MCRcon(adress, password, port=port) as mcr:
             return True
