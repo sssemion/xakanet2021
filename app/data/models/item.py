@@ -1,9 +1,10 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, orm
+from sqlalchemy_serializer import SerializerMixin
 
 from app.data.db_session import db
 
 
-class Item(db.Model):
+class Item(db.Model, SerializerMixin):
     __tablename__ = "items"
 
     id = Column(Integer, primary_key=True, autoincrement=True)

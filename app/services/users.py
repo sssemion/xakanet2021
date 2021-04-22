@@ -9,10 +9,13 @@ from flask_login import current_user
 
 from app import login_manager
 from app.data.db_session import create_session, create_non_closing_session
+from app.data.models import Item, MCServer
 from app.data.models.user import User
 from app.exceptions import EmailAlreadyExists, UsernameAlreadyExists, InvalidLoginOrPassword, InsecurePassword, \
     ResourceNotFound, InvalidConfirmationCode
 from app.services.email import send_email
+from app.services.items import get_minecraft_item_name
+from app.services.minecraft import give_item
 
 
 @login_manager.user_loader
@@ -44,8 +47,9 @@ def sign_up(email, username, password, photo=None):
         session.commit()
 
         if photo:
-            photo_filename = generate_photo_filename(user.id)
-            photo.save(f"app/static/img/profile-photos/{photo_filename}.{photo.filename.split('.')[-1]}")
+            photo_filename = f"{generate_photo_filename(user.id)}.{photo.filename.split('.')[-1]}"
+            photo.save(f"app/static/img/profile-photos/{photo_filename}")
+            user.photo = photo_filename
         flask_login.login_user(user)
 
 
@@ -67,6 +71,19 @@ def log_in(login, password, remember_me=False):
         return True
 
 
+def edit(twitch, youtube, photo):
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        user.twitch = twitch
+        user.youtube = youtube
+        if photo:
+            if user.photo:
+                os.remove(f"app/static/img/profile-photos/{user.photo}")
+            photo_filename = f"{generate_photo_filename(user.id)}.{photo.filename.split('.')[-1]}"
+            photo.save(f"app/static/img/profile-photos/{photo_filename}")
+            user.photo = photo_filename
+
+
 def is_password_secure(password: str) -> bool:
     return not (len(password) < 8 or
                 password.isdigit() or
@@ -81,7 +98,7 @@ def get_user_json(username):
         if user is None:
             raise ResourceNotFound
         if current_user.is_authenticated and user == current_user and current_user.confirmed:
-            return user.to_dict(additional=["email", "active_mc_server", "mc_servers", "confirmed"])
+            return user.to_dict(additional=["email", "active_mc_server", "mc_servers", "confirmed", "money"])
         return user.to_dict()
 
 
@@ -89,3 +106,21 @@ def generate_photo_filename(unique_id):
     user_id_hash = hashlib.md5(str(unique_id).encode("utf-8")).digest()
     datetime_hash = hashlib.md5(str(datetime.datetime.now()).encode("utf-8")).digest()
     return hashlib.sha1(user_id_hash + datetime_hash).hexdigest()
+
+
+def give_item_handler(username, item_id):
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        streamer = session.query(User).filter(User.username == username).first()
+        item = session.query(Item).get(item_id)
+        if streamer is None or item is None:
+            raise ResourceNotFound
+        if streamer.active_mc_server is None:
+            raise ResourceNotFound
+        server = session.query(MCServer).get(streamer.active_mc_server)
+
+        item_name = get_minecraft_item_name(item.name)
+        res = give_item(server.nickname, item_name, 1, server.host, server.rcon_port, server.rcon_password)
+
+        # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
+        user.money -= item.price
