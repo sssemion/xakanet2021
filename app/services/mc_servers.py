@@ -27,6 +27,8 @@ def delete_server(server_id):
         server = session.query(MCServer).get(server_id)
         if server is None:
             raise ResourceNotFound
+        if current_user != server.owner:
+            raise ResourceNotFound
         if server.owner.active_mc_server == server.id:
             server.owner.active_mc_server = None
         server.owner.mc_servers.remove(server)

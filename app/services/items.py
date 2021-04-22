@@ -15,3 +15,7 @@ def get_all_items_json():
 
 def get_photo_filename(name, category_name):
     return category_name + "/" + "_".join(name.title().split()) + ".png"
+
+
+def get_minecraft_item_name(name):
+    return "_".join(name.split()).lower()

@@ -12,13 +12,13 @@ from app.forms.edit import EditForm
 from app.forms.login import LoginForm
 from app.forms.signup import SignUpForm
 from app.forms.support import SupportForm
-from app.services.items import get_all_items_json
 from app.services.mc_servers import create_server
 from app.services.users import log_in, sign_up, get_user_json, confirm_email, edit
 
 
 def only_for_authenticated_and_confirmed(func):
     def new_func(*args, **kwargs):
+        print(1)
         if not current_user.is_authenticated:
             return redirect("/login")
         if not current_user.confirmed:
@@ -91,8 +91,8 @@ def logout():
     return redirect("/")
 
 
-@only_for_authenticated_and_confirmed
 @app.route("/server/new", methods=["GET", "POST"])
+@only_for_authenticated_and_confirmed
 def create_server_page():
     form = CreateMCServerForm()
     if form.validate_on_submit():
@@ -122,8 +122,8 @@ def support_page():
     return render_template("support.html")
 
 
-@only_for_authenticated_and_confirmed
 @app.route("/edit", methods=["GET", "POST"])
+@only_for_authenticated_and_confirmed
 def edit_page():
     form = EditForm()
     if form.validate_on_submit():
