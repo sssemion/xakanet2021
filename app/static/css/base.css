@@ -10,6 +10,8 @@
 body{
     margin: 0;
     background-image: url(../img/minecraft_texture.jpg);
+}
+*{
     font-family: 'test';
 }
 .error{

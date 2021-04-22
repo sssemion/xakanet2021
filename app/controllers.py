@@ -6,6 +6,7 @@ from app import app
 from app.exceptions import InvalidLoginOrPassword, InsecurePassword, EmailAlreadyExists, UsernameAlreadyExists, \
     ServerAlreadyAdded, ServerConnectionError
 from app.forms.create_mc_server import CreateMCServerForm
+from app.forms.edit import EditForm
 from app.forms.login import LoginForm
 from app.forms.signup import SignUpForm
 from app.forms.support import SupportForm
@@ -42,7 +43,7 @@ def signup_page():
 @app.route("/edit")
 def details():
     form = EditForm()
-    return render_template("user/edit.html")
+    return render_template("user/edit.html", form=form)
 
 
 @app.route("/login", methods=["GET", "POST"])

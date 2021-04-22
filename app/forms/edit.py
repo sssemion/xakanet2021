@@ -34,4 +34,4 @@ class EditForm(FlaskForm):
         self.photo.render_kw["class"] = "photo-item"
         self.twitch.render_kw["class"] = default
         self.youtube.render_kw["class"] = default
-        self.content = [self.photo, self.twitch, self.youtube]
+        self.content = [self.twitch, self.youtube]
