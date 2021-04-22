@@ -25,7 +25,6 @@ def signup_page():
     if form.validate_on_submit():
         if form.password.data != form.password_again.data:
             form.password_again.errors.append("Пароли не совпадают")
-            print(1)
         else:
             try:
                 sign_up(form.email.data, form.username.data, form.password.data)
@@ -36,7 +35,7 @@ def signup_page():
                 form.email.errors.append(str(e))
             except InsecurePassword as e:
                 form.password.errors.append(str(e))
-    return render_template("signup.html", form=form)
+    return render_template("user/signup.html", form=form)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -50,7 +49,7 @@ def login_page():
             return redirect("/")
         except InvalidLoginOrPassword as e:
             form.password.errors.append(str(e))
-    return render_template("login.html", form=form)
+    return render_template("user/login.html", form=form)
 
 
 @app.route("/logout")
@@ -76,7 +75,7 @@ def create_server_page():
 
 @app.route("/profile/<string:username>", methods=["GET"])
 def profile(username):
-    return render_template('user/profile.html', user={"username": "me", "email": "my.open@mail.ru",
+    return render_template("user/profile.html", user={"username": "me", "email": "my.open@mail.ru",
                                                       "links": [{"place": "youtube", "link": "https://youtube.com"},
                                                                 {"place": "twitch", "link": "https://twitch.tv"}],
                                                       "servers": [{"name": "Germany", "id": 1}]})
