@@ -40,7 +40,7 @@
         {% endif %}
         {% set active_server_id = user['active_mc_server'] %}
         {% if user['mc_servers'] %}
-                <p>servers (<a href="server/new">create new</a>):</p>
+                <p>servers (<a href="/server/new">create new</a>):</p>
             {% for server in user['mc_servers'] %}
                     {% set server_id = server['id'] %}
                     <p>
@@ -53,7 +53,7 @@
                     </p>
             {% endfor %}
         {% else %}
-        <a href="server/new">create new server</a>
+        <a href="/server/new">create new server</a>
         {% endif %}
     </div>
 </div>
