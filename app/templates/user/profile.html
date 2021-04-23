@@ -17,7 +17,7 @@
         {% if current_user['id'] == user['id'] %}
             <a style="display: block;" href="/edit">change details</a>
         {% else %}
-            <a style="display: block;" href="/{{ user['username'] }}/support">support</a>
+            <a style="display: block;" href="/profile/{{ user['username'] }}/support">support</a>
         {% endif %}
     </div>
     <div class="right-item">
@@ -52,7 +52,7 @@
                         </input>
                     </p>
             {% endfor %}
-        {% else %}
+        {% elif current_user['id'] == user['id'] %}
         <a href="/server/new">create new server</a>
         {% endif %}
     </div>

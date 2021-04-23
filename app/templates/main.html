@@ -1,5 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<a>Hello world</a>
+
+<div class="container content streamers">
+    <h1>Streamers</h1>
+    {% for user in users %}
+    <div class="user">
+        <a href="/profile/{{ user['username'] }}">{{ user['username'] }}</a>
+    </div>
+    {% endfor %}
+
+</div>
 {% endblock %}

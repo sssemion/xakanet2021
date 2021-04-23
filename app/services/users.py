@@ -111,6 +111,12 @@ def get_user_json(username):
         return user.to_dict()
 
 
+def get_all_users():
+    with create_session() as session:
+        print(session.query(User).all()[0].to_dict())
+        return [item.to_dict() for item in session.query(User).all()]
+
+
 def generate_photo_filename(unique_id):
     user_id_hash = hashlib.md5(str(unique_id).encode("utf-8")).digest()
     datetime_hash = hashlib.md5(str(datetime.datetime.now()).encode("utf-8")).digest()
