@@ -53,7 +53,7 @@ def sand_lock(pl, adress, port, password):
 
 def web_lock(pl, adress, port, password):
     with MCRcon(adress, password, port=port) as mcr:
-        a = mcr.command(f"execute at {pl} run fill ~-2 ~-2 ~-2 ~2 ~2 ~2 minecraft:sand")
+        a = mcr.command(f"execute at {pl} run fill ~-2 ~-2 ~-2 ~2 ~2 ~2 minecraft:web")
         return a[:12] == 'Successfully'
 
 
