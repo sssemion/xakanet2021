@@ -12,7 +12,7 @@ from app.data.db_session import create_session, create_non_closing_session
 from app.data.models import Item, MCServer
 from app.data.models.user import User
 from app.exceptions import EmailAlreadyExists, UsernameAlreadyExists, InvalidLoginOrPassword, InsecurePassword, \
-    ResourceNotFound, InvalidConfirmationCode
+    ResourceNotFound, InvalidConfirmationCode, InvalidUsername, NotEnoughMoney
 from app.services.email import send_email
 from app.services.items import get_minecraft_item_name
 from app.services.minecraft import give_item
@@ -32,6 +32,8 @@ def sign_up(email, username, password, photo=None):
             raise UsernameAlreadyExists(username)
         if not is_password_secure(password):
             raise InsecurePassword
+        if not check_username(username):
+            raise InvalidUsername
         user = User(email=email, username=username)
         user.set_password(password)
 
@@ -92,6 +94,13 @@ def is_password_secure(password: str) -> bool:
                 password.isupper()) and password.isalnum()
 
 
+def check_username(username: str) -> bool:
+    username = username.replace("-", "").replace("_", "")
+    if username.isalnum() and not username.isdigit():
+        return True
+    return False
+
+
 def get_user_json(username):
     with create_session() as session:
         user = session.query(User).filter(User.username == username).first()
@@ -117,6 +126,8 @@ def give_item_handler(username, item_id):
             raise ResourceNotFound
         if streamer.active_mc_server is None:
             raise ResourceNotFound
+        if user.money < item.price:
+            raise NotEnoughMoney
         server = session.query(MCServer).get(streamer.active_mc_server)
 
         item_name = get_minecraft_item_name(item.name)
