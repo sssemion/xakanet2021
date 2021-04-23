@@ -35,7 +35,7 @@ def give_item_controller(username, item_id):
 
 @ajax.route("/user/<username>/act/creeper", methods=["POST"])
 @only_for_authenticated_and_confirmed
-def give_item_controller(username):
+def act_creeper_controller(username):
     try:
         # give_item_handler(username, item_id)
         return jsonify({"success": True})
@@ -45,7 +45,7 @@ def give_item_controller(username):
 
 @ajax.route("/user/<username>/act/web", methods=["POST"])
 @only_for_authenticated_and_confirmed
-def give_item_controller(username):
+def act_web_controller(username):
     try:
         # give_item_handler(username, item_id)
         return jsonify({"success": True})
@@ -55,7 +55,7 @@ def give_item_controller(username):
 
 @ajax.route("/user/<username>/act/sand", methods=["POST"])
 @only_for_authenticated_and_confirmed
-def give_item_controller(username):
+def act_sand_controller(username):
     try:
         # give_item_handler(username, item_id)
         return jsonify({"success": True})
