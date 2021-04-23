@@ -12,7 +12,7 @@ from app.data.db_session import create_session, create_non_closing_session
 from app.data.models import Item, MCServer
 from app.data.models.user import User
 from app.exceptions import EmailAlreadyExists, UsernameAlreadyExists, InvalidLoginOrPassword, InsecurePassword, \
-    ResourceNotFound, InvalidConfirmationCode
+    ResourceNotFound, InvalidConfirmationCode, InvalidUsername
 from app.services.email import send_email
 from app.services.items import get_minecraft_item_name
 from app.services.minecraft import give_item
@@ -32,6 +32,8 @@ def sign_up(email, username, password, photo=None):
             raise UsernameAlreadyExists(username)
         if not is_password_secure(password):
             raise InsecurePassword
+        if not check_username(username):
+            raise InvalidUsername
         user = User(email=email, username=username)
         user.set_password(password)
 
@@ -90,6 +92,13 @@ def is_password_secure(password: str) -> bool:
                 password.isalpha() or
                 password.islower() or
                 password.isupper()) and password.isalnum()
+
+
+def check_username(username: str) -> bool:
+    username = username.replace("-", "").replace("_", "")
+    if username.isalnum() and not username.isdigit():
+        return True
+    return False
 
 
 def get_user_json(username):

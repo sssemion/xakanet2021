@@ -40,3 +40,9 @@ class ResourceNotFound(CustomException):
 class InvalidConfirmationCode(CustomException):
     def __init__(self):
         super(InvalidConfirmationCode, self).__init__("Неверный код подтверждения")
+
+
+class InvalidUsername(CustomException):
+    def __init__(self):
+        super(InvalidUsername, self).__init__("Недопустимое имя пользователя. Имя пользователя может состоять только "
+                                              "из строчных букв английского алфавита, цифр и символов \"-\" и \"_\"")

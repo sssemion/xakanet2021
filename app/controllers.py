@@ -5,7 +5,7 @@ from werkzeug.utils import redirect
 
 from app import app
 from app.exceptions import InvalidLoginOrPassword, InsecurePassword, EmailAlreadyExists, UsernameAlreadyExists, \
-    ServerAlreadyAdded, ServerConnectionError, ResourceNotFound, InvalidConfirmationCode
+    ServerAlreadyAdded, ServerConnectionError, ResourceNotFound, InvalidConfirmationCode, InvalidUsername
 from app.forms.confirm_email import ConfirmEmailForm
 from app.forms.create_mc_server import CreateMCServerForm
 from app.forms.edit import EditForm
@@ -53,6 +53,8 @@ def signup_page():
                 form.email.errors.append(str(e))
             except InsecurePassword as e:
                 form.password.errors.append(str(e))
+            except InvalidUsername as e:
+                form.username.errors.append(str(e))
     return render_template("user/signup.html", form=form)
 
 
