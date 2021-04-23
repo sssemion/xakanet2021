@@ -12,10 +12,10 @@ from app.data.db_session import create_session, create_non_closing_session
 from app.data.models import Item, MCServer
 from app.data.models.user import User
 from app.exceptions import EmailAlreadyExists, UsernameAlreadyExists, InvalidLoginOrPassword, InsecurePassword, \
-    ResourceNotFound, InvalidConfirmationCode, InvalidUsername, NotEnoughMoney
+    ResourceNotFound, InvalidConfirmationCode, InvalidUsername, NotEnoughMoney, RconCommandError
 from app.services.email import send_email
 from app.services.items import get_minecraft_item_name
-from app.services.minecraft import give_item
+from app.services.minecraft import give_item, mega_bomb, web_lock, sand_lock
 
 
 @login_manager.user_loader
@@ -111,6 +111,12 @@ def get_user_json(username):
         return user.to_dict()
 
 
+def get_all_users():
+    with create_session() as session:
+        print(session.query(User).all()[0].to_dict())
+        return [item.to_dict() for item in session.query(User).all()]
+
+
 def generate_photo_filename(unique_id):
     user_id_hash = hashlib.md5(str(unique_id).encode("utf-8")).digest()
     datetime_hash = hashlib.md5(str(datetime.datetime.now()).encode("utf-8")).digest()
@@ -133,5 +139,84 @@ def give_item_handler(username, item_id):
         item_name = get_minecraft_item_name(item.name)
         res = give_item(server.nickname, item_name, 1, server.host, server.rcon_port, server.rcon_password)
 
-        # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
-        user.money -= item.price
+        if res:
+            user.money -= item.price
+        else:
+            raise RconCommandError
+
+
+def set_active_server(server_id):
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        server = session.query(MCServer).get(server_id)
+        if user is None or server is None:
+            raise ResourceNotFound
+        if server not in user.mc_servers:
+            raise ResourceNotFound
+        user.active_mc_server = server_id
+
+
+def act_creeper_handler(username):
+    PRICE = 500
+
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        streamer = session.query(User).filter(User.username == username).first()
+        if streamer is None:
+            raise ResourceNotFound
+        if streamer.active_mc_server is None:
+            raise ResourceNotFound
+        if user.money < PRICE:
+            raise NotEnoughMoney
+        server = session.query(MCServer).get(streamer.active_mc_server)
+
+        res = mega_bomb(server.nickname, server.host, server.rcon_port, server.rcon_password)
+
+        if res:
+            user.money -= PRICE
+        else:
+            raise RconCommandError
+
+
+def act_web_handler(username):
+    PRICE = 200
+
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        streamer = session.query(User).filter(User.username == username).first()
+        if streamer is None:
+            raise ResourceNotFound
+        if streamer.active_mc_server is None:
+            raise ResourceNotFound
+        if user.money < PRICE:
+            raise NotEnoughMoney
+        server = session.query(MCServer).get(streamer.active_mc_server)
+
+        res = web_lock(server.nickname, server.host, server.rcon_port, server.rcon_password)
+
+        if res:
+            user.money -= PRICE
+        else:
+            raise RconCommandError
+
+
+def act_sand_handler(username):
+    PRICE = 30
+
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        streamer = session.query(User).filter(User.username == username).first()
+        if streamer is None:
+            raise ResourceNotFound
+        if streamer.active_mc_server is None:
+            raise ResourceNotFound
+        if user.money < PRICE:
+            raise NotEnoughMoney
+        server = session.query(MCServer).get(streamer.active_mc_server)
+
+        res = sand_lock(server.nickname, server.host, server.rcon_port, server.rcon_password)
+
+        if res:
+            user.money -= PRICE
+        else:
+            raise RconCommandError

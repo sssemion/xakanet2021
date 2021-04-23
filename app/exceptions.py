@@ -51,3 +51,8 @@ class InvalidUsername(CustomException):
 class NotEnoughMoney(CustomException):
     def __init__(self):
         super(NotEnoughMoney, self).__init__("Недостаточно средств на балансе")
+
+
+class RconCommandError(CustomException):
+    def __init__(self):
+        super(RconCommandError, self).__init__("Ошибка выполнения команды")
