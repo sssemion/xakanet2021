@@ -12,7 +12,7 @@ from app.data.db_session import create_session, create_non_closing_session
 from app.data.models import Item, MCServer
 from app.data.models.user import User
 from app.exceptions import EmailAlreadyExists, UsernameAlreadyExists, InvalidLoginOrPassword, InsecurePassword, \
-    ResourceNotFound, InvalidConfirmationCode, InvalidUsername
+    ResourceNotFound, InvalidConfirmationCode, InvalidUsername, NotEnoughMoney
 from app.services.email import send_email
 from app.services.items import get_minecraft_item_name
 from app.services.minecraft import give_item
@@ -126,6 +126,8 @@ def give_item_handler(username, item_id):
             raise ResourceNotFound
         if streamer.active_mc_server is None:
             raise ResourceNotFound
+        if user.money < item.price:
+            raise NotEnoughMoney
         server = session.query(MCServer).get(streamer.active_mc_server)
 
         item_name = get_minecraft_item_name(item.name)

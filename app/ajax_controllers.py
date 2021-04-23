@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 
 from app.controllers import only_for_authenticated_and_confirmed
-from app.exceptions import ResourceNotFound
+from app.exceptions import ResourceNotFound, NotEnoughMoney
 from app.services.mc_servers import delete_server
 from app.services.users import give_item_handler
 
@@ -29,5 +29,5 @@ def give_item_controller(username, item_id):
     try:
         give_item_handler(username, item_id)
         return jsonify({"success": True})
-    except ResourceNotFound as e:
+    except (ResourceNotFound, NotEnoughMoney) as e:
         return jsonify({"success": False, "message": str(e)})

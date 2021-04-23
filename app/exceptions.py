@@ -46,3 +46,8 @@ class InvalidUsername(CustomException):
     def __init__(self):
         super(InvalidUsername, self).__init__("Недопустимое имя пользователя. Имя пользователя может состоять только "
                                               "из строчных букв английского алфавита, цифр и символов \"-\" и \"_\"")
+
+
+class NotEnoughMoney(CustomException):
+    def __init__(self):
+        super(NotEnoughMoney, self).__init__("Недостаточно средств на балансе")
