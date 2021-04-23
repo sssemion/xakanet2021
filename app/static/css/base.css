@@ -41,6 +41,11 @@ body{
     z-index: 2;
     cursor: pointer;
 }
+
+.streamers{
+    overflow-y: scroll;
+}
+
 .custom-radio {
     position: absolute;
     z-index: -1;
