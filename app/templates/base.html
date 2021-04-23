@@ -28,13 +28,13 @@
 <body>
 <ul id="navbar">
     <li><a href="/">Главная</a></li>
-    {% if current_user %}
+    {% if current_user.is_authenticated %}
     <li><a href="/profile/{{ current_user['username'] }}">{{ current_user['username'] }}</a></li>
     {% else %}
     <li><a href="/signup">Зарегестрироваться</a></li>
     <li><a href="/login">Войти</a></li>
     {% endif %}
-    {% if current_user %}
+    {% if current_user.is_authenticated %}
     <li style="float: right;"><a href="/logout">Выйти</a></li>
     {% endif %}
 </ul>

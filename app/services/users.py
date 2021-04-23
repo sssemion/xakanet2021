@@ -113,8 +113,7 @@ def get_user_json(username):
 
 def get_all_users():
     with create_session() as session:
-        print(session.query(User).all()[0].to_dict())
-        return [item.to_dict() for item in session.query(User).all()]
+        return [item.to_dict() for item in session.query(User).filter(User.active_mc_server.isnot(None)).all()]
 
 
 def generate_photo_filename(unique_id):

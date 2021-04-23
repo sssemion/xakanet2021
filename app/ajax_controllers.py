@@ -16,7 +16,7 @@ def delete_server_controller(server_id):
         delete_server(server_id)
         return jsonify({"success": True})
     except ResourceNotFound as e:
-        return jsonify({"success": False, "message": str(e)})
+        return jsonify({"success": False, "message": str(e)}), 400
 
 
 @ajax.route("/server/activate/<int:server_id>", methods=["POST"])
@@ -25,7 +25,7 @@ def activate_server(server_id):
     try:
         set_active_server(server_id)
     except ResourceNotFound as e:
-        return jsonify({"success": False, "message":str(e)})
+        return jsonify({"success": False, "message": str(e)}), 400
     return jsonify({"success": True})
 
 
@@ -36,7 +36,7 @@ def give_item_controller(username, item_id):
         give_item_handler(username, item_id)
         return jsonify({"success": True})
     except (ResourceNotFound, NotEnoughMoney, RconCommandError) as e:
-        return jsonify({"success": False, "message": str(e)})
+        return jsonify({"success": False, "message": str(e)}), 400
 
 
 @ajax.route("/user/<username>/act/creeper", methods=["POST"])
@@ -46,7 +46,7 @@ def act_creeper_controller(username):
         act_creeper_handler(username)
         return jsonify({"success": True})
     except (ResourceNotFound, NotEnoughMoney, RconCommandError) as e:
-        return jsonify({"success": False, "message": str(e)})
+        return jsonify({"success": False, "message": str(e)}), 400
 
 
 @ajax.route("/user/<username>/act/web", methods=["POST"])
@@ -56,7 +56,7 @@ def act_web_controller(username):
         act_web_handler(username)
         return jsonify({"success": True})
     except (ResourceNotFound, NotEnoughMoney, RconCommandError) as e:
-        return jsonify({"success": False, "message": str(e)})
+        return jsonify({"success": False, "message": str(e)}), 400
 
 
 @ajax.route("/user/<username>/act/sand", methods=["POST"])
@@ -66,4 +66,4 @@ def act_sand_controller(username):
         act_sand_handler(username)
         return jsonify({"success": True})
     except (ResourceNotFound, NotEnoughMoney, RconCommandError) as e:
-        return jsonify({"success": False, "message": str(e)})
+        return jsonify({"success": False, "message": str(e)}), 400
