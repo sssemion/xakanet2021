@@ -3,7 +3,8 @@ from flask import Blueprint, jsonify
 from app.controllers import only_for_authenticated_and_confirmed
 from app.exceptions import ResourceNotFound, NotEnoughMoney
 from app.services.mc_servers import delete_server
-from app.services.users import give_item_handler
+from app.services.users import give_item_handler, set_active_server, act_creeper_handler, act_web_handler, \
+    act_sand_handler
 
 ajax = Blueprint("ajax", __name__)
 
@@ -19,7 +20,12 @@ def delete_server_controller(server_id):
 
 
 @ajax.route("/server/activate/<int:server_id>", methods=["POST"])
+@only_for_authenticated_and_confirmed
 def activate_server(server_id):
+    try:
+        set_active_server(server_id)
+    except ResourceNotFound as e:
+        return jsonify({"success": False, "message":str(e)})
     return jsonify({"success": True})
 
 
@@ -37,7 +43,7 @@ def give_item_controller(username, item_id):
 @only_for_authenticated_and_confirmed
 def act_creeper_controller(username):
     try:
-        # give_item_handler(username, item_id)
+        act_creeper_handler(username)
         return jsonify({"success": True})
     except ResourceNotFound as e:
         return jsonify({"success": False, "message": str(e)})
@@ -47,7 +53,7 @@ def act_creeper_controller(username):
 @only_for_authenticated_and_confirmed
 def act_web_controller(username):
     try:
-        # give_item_handler(username, item_id)
+        act_web_handler(username)
         return jsonify({"success": True})
     except ResourceNotFound as e:
         return jsonify({"success": False, "message": str(e)})
@@ -57,7 +63,7 @@ def act_web_controller(username):
 @only_for_authenticated_and_confirmed
 def act_sand_controller(username):
     try:
-        # give_item_handler(username, item_id)
+        act_sand_handler(username)
         return jsonify({"success": True})
     except ResourceNotFound as e:
         return jsonify({"success": False, "message": str(e)})

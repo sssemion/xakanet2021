@@ -135,3 +135,74 @@ def give_item_handler(username, item_id):
 
         # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
         user.money -= item.price
+
+
+def set_active_server(server_id):
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        server = session.query(MCServer).get(server_id)
+        if user is None or server is None:
+            raise ResourceNotFound
+        if server not in user.mc_servers:
+            raise ResourceNotFound
+        user.active_mc_server = server_id
+
+
+def act_creeper_handler(username):
+    PRICE = 500
+
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        streamer = session.query(User).filter(User.username == username).first()
+        if streamer is None:
+            raise ResourceNotFound
+        if streamer.active_mc_server is None:
+            raise ResourceNotFound
+        if user.money < PRICE:
+            raise NotEnoughMoney
+        server = session.query(MCServer).get(streamer.active_mc_server)
+
+        res = None
+
+        # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
+        user.money -= PRICE
+
+
+def act_web_handler(username):
+    PRICE = 200
+
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        streamer = session.query(User).filter(User.username == username).first()
+        if streamer is None:
+            raise ResourceNotFound
+        if streamer.active_mc_server is None:
+            raise ResourceNotFound
+        if user.money < PRICE:
+            raise NotEnoughMoney
+        server = session.query(MCServer).get(streamer.active_mc_server)
+
+        res = None
+
+        # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
+        user.money -= PRICE
+
+
+def act_sand_handler(username):
+    PRICE = 30
+
+    with create_session() as session:
+        user = session.query(User).get(current_user.id)
+        streamer = session.query(User).filter(User.username == username).first()
+        if streamer is None:
+            raise ResourceNotFound
+        if streamer.active_mc_server is None:
+            raise ResourceNotFound
+        if user.money < PRICE:
+            raise NotEnoughMoney
+        server = session.query(MCServer).get(streamer.active_mc_server)
+
+        res = None
+
+        # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
+        user.money -= PRICE
