@@ -12,10 +12,10 @@ from app.data.db_session import create_session, create_non_closing_session
 from app.data.models import Item, MCServer
 from app.data.models.user import User
 from app.exceptions import EmailAlreadyExists, UsernameAlreadyExists, InvalidLoginOrPassword, InsecurePassword, \
-    ResourceNotFound, InvalidConfirmationCode, InvalidUsername, NotEnoughMoney
+    ResourceNotFound, InvalidConfirmationCode, InvalidUsername, NotEnoughMoney, RconCommandError
 from app.services.email import send_email
 from app.services.items import get_minecraft_item_name
-from app.services.minecraft import give_item
+from app.services.minecraft import give_item, mega_bomb, web_lock, sand_lock
 
 
 @login_manager.user_loader
@@ -133,8 +133,10 @@ def give_item_handler(username, item_id):
         item_name = get_minecraft_item_name(item.name)
         res = give_item(server.nickname, item_name, 1, server.host, server.rcon_port, server.rcon_password)
 
-        # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
-        user.money -= item.price
+        if res:
+            user.money -= item.price
+        else:
+            raise RconCommandError
 
 
 def set_active_server(server_id):
@@ -162,10 +164,12 @@ def act_creeper_handler(username):
             raise NotEnoughMoney
         server = session.query(MCServer).get(streamer.active_mc_server)
 
-        res = None
+        res = mega_bomb(server.nickname, server.host, server.rcon_port, server.rcon_password)
 
-        # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
-        user.money -= PRICE
+        if res:
+            user.money -= PRICE
+        else:
+            raise RconCommandError
 
 
 def act_web_handler(username):
@@ -182,10 +186,12 @@ def act_web_handler(username):
             raise NotEnoughMoney
         server = session.query(MCServer).get(streamer.active_mc_server)
 
-        res = None
+        res = web_lock(server.nickname, server.host, server.rcon_port, server.rcon_password)
 
-        # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
-        user.money -= PRICE
+        if res:
+            user.money -= PRICE
+        else:
+            raise RconCommandError
 
 
 def act_sand_handler(username):
@@ -202,7 +208,9 @@ def act_sand_handler(username):
             raise NotEnoughMoney
         server = session.query(MCServer).get(streamer.active_mc_server)
 
-        res = None
+        res = sand_lock(server.nickname, server.host, server.rcon_port, server.rcon_password)
 
-        # TODO: Проверка успешности выполнения команды rcon и списание деняк в случае успеха
-        user.money -= PRICE
+        if res:
+            user.money -= PRICE
+        else:
+            raise RconCommandError

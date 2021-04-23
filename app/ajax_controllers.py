@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 
 from app.controllers import only_for_authenticated_and_confirmed
-from app.exceptions import ResourceNotFound, NotEnoughMoney
+from app.exceptions import ResourceNotFound, NotEnoughMoney, RconCommandError
 from app.services.mc_servers import delete_server
 from app.services.users import give_item_handler, set_active_server, act_creeper_handler, act_web_handler, \
     act_sand_handler
@@ -35,7 +35,7 @@ def give_item_controller(username, item_id):
     try:
         give_item_handler(username, item_id)
         return jsonify({"success": True})
-    except (ResourceNotFound, NotEnoughMoney) as e:
+    except (ResourceNotFound, NotEnoughMoney, RconCommandError) as e:
         return jsonify({"success": False, "message": str(e)})
 
 
@@ -45,7 +45,7 @@ def act_creeper_controller(username):
     try:
         act_creeper_handler(username)
         return jsonify({"success": True})
-    except ResourceNotFound as e:
+    except (ResourceNotFound, NotEnoughMoney, RconCommandError) as e:
         return jsonify({"success": False, "message": str(e)})
 
 
@@ -55,7 +55,7 @@ def act_web_controller(username):
     try:
         act_web_handler(username)
         return jsonify({"success": True})
-    except ResourceNotFound as e:
+    except (ResourceNotFound, NotEnoughMoney, RconCommandError) as e:
         return jsonify({"success": False, "message": str(e)})
 
 
@@ -65,5 +65,5 @@ def act_sand_controller(username):
     try:
         act_sand_handler(username)
         return jsonify({"success": True})
-    except ResourceNotFound as e:
+    except (ResourceNotFound, NotEnoughMoney, RconCommandError) as e:
         return jsonify({"success": False, "message": str(e)})
