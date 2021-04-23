@@ -14,7 +14,7 @@ body{
 *{
     font-family: 'test';
 }
-.error{
+.error-button{
     border: solid 1px pink;
     border-radius: 5px 5px;
     background: rgba(0,0,0,.5);
@@ -24,7 +24,19 @@ body{
     -webkit-background-size: cover;
     background-size: cover;
 }
-.error:hover{
+
+.error{
+    border: solid 1px pink;
+    border-radius: 5px 5px;
+    background-image: url(../img/bg-redstone.jpg);
+    background-repeat: repeat;
+    color: white;
+    vertical-align: center;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.error-button:hover{
     background-image: url(../img/bg-redstone.jpg);
     z-index: 2;
     cursor: pointer;

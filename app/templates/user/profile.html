@@ -14,7 +14,11 @@
 <div class="content">
     <div class="left-item" style="width: 40%">
         <img class="avatar" src="{{ photo_url }}">
-        <a style="display: block;" href="/edit">change details</a>
+        {% if current_user['id'] == user['id'] %}
+            <a style="display: block;" href="/edit">change details</a>
+        {% else %}
+            <a style="display: block;" href="/{{ user['username'] }}/support">support</a>
+        {% endif %}
     </div>
     <div class="right-item">
         <p>username: {{ user['username'] }}</p>
@@ -43,11 +47,13 @@
                         <input class="custom-radio" type="radio" name="server", value="{{ server['id'] }}" id="{{ server['id'] }}" {% if server_id == active_server_id %} checked {% endif %}>
                         <label for="{{ server['id'] }}">
                             <a href="/server/{{ server['id'] }}" >{{ server['name'] }}</a>
-                            (<button class="error delete-server" value="{{ server['id'] }}">delete</button>)
+                            (<button class="error-button delete-server" value="{{ server['id'] }}">delete</button>)
                         </label>
                         </input>
                     </p>
             {% endfor %}
+        {% else %}
+        <a href="server/new">create new server</a>
         {% endif %}
     </div>
 </div>

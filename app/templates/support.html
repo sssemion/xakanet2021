@@ -2,12 +2,37 @@
 
 {% set style_files = [url_for('static', filename='css/support.css')] %}
 {% set script_files = [url_for('static', filename='js/support.js')] %}
+{% set item_groups = ['food', 'armor', 'weapon', 'ingot', 'other'] %}
 
 {% block content %}
 
 <div class="container">
     <div class="content">
-
+        {% for group in item_groups %}
+            <div class="item-group">
+                <p>{{ group }}</p>
+                {% for item in items[group] %}
+                    <button class="item-button" value="{{ user['username'] }},{{ item['id'] }}">
+                        <img class="item-image" src="{{ url_for('static', filename=('img/item-images/' + item['photo'])) }}" title="{{ item['name'] }}">
+                        {{ item['price'] }}</button>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <div class="item-group">
+            <p>actions</p>
+            <button class="action-creeper" value="{{ user['username'] }}">
+                <img class="item-image" src="url_for('static', filename=('img/item-images/dop/creeper.png') ">
+            500
+            </button>
+            <button class="action-web" value="{{ user['username'] }}">
+                <img class="item-image" src="url_for('static', filename=('img/item-images/dop/web.png') ">
+            200
+            </button>
+            <button class="action-sand" value="{{ user['username'] }}">
+                <img class="item-image" src="url_for('static', filename=('img/item-images/dop/sand.png') ">
+            30
+            </button>
+        </div>
     </div>
 </div>
 

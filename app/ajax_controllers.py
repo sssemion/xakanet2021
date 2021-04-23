@@ -16,8 +16,8 @@ def delete_server_controller(server_id):
         return jsonify({"success": True})
     except ResourceNotFound as e:
         return jsonify({"success": False, "message": str(e)})
-      
-      
+
+
 @ajax.route("/server/activate/<int:server_id>", methods=["POST"])
 def activate_server(server_id):
     return jsonify({"success": True})
@@ -28,6 +28,36 @@ def activate_server(server_id):
 def give_item_controller(username, item_id):
     try:
         give_item_handler(username, item_id)
+        return jsonify({"success": True})
+    except ResourceNotFound as e:
+        return jsonify({"success": False, "message": str(e)})
+
+
+@ajax.route("/user/<username>/act/creeper", methods=["POST"])
+@only_for_authenticated_and_confirmed
+def give_item_controller(username):
+    try:
+        # give_item_handler(username, item_id)
+        return jsonify({"success": True})
+    except ResourceNotFound as e:
+        return jsonify({"success": False, "message": str(e)})
+
+
+@ajax.route("/user/<username>/act/web", methods=["POST"])
+@only_for_authenticated_and_confirmed
+def give_item_controller(username):
+    try:
+        # give_item_handler(username, item_id)
+        return jsonify({"success": True})
+    except ResourceNotFound as e:
+        return jsonify({"success": False, "message": str(e)})
+
+
+@ajax.route("/user/<username>/act/sand", methods=["POST"])
+@only_for_authenticated_and_confirmed
+def give_item_controller(username):
+    try:
+        # give_item_handler(username, item_id)
         return jsonify({"success": True})
     except ResourceNotFound as e:
         return jsonify({"success": False, "message": str(e)})

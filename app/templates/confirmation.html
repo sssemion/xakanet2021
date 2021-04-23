@@ -10,7 +10,9 @@
             {{ form.code.label }}
             {{ form.code() }}
             {% for error in form.code.errors %}
-                {{ form.code.errors }}
+            <div class="error">
+                {{ error }}
+            </div>
             {% endfor %}
         </div>
 
